@@ -89,9 +89,15 @@ export default function Room({ room, myId, onLeave }: RoomProps) {
   }
 
   function prepareNextRound() {
-    socket.emit('round:prepare', { code: room.code }, (result: { ok: boolean; error?: string }) => {
-      if (!result.ok) setFeedback(result.error ?? 'تعذر تجهيز الجولة التالية');
-    });
+    socket.emit(
+      'round:next',
+      { code: room.code },
+      (result: { ok: boolean; error?: string }) => {
+        if (!result.ok) {
+          setFeedback(result.error ?? 'تعذر بدء الجولة التالية');
+        }
+      }
+    );
   }
 
   function leaveRoom() {
