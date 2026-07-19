@@ -37,9 +37,17 @@ export default function Room({ room, myId, onLeave }: RoomProps) {
   useEffect(() => {
     socket.emit('categories:list', (list: GameCategoryLight[]) => setCategories(list));
   }, []);
-
+  
+  // افتح الإعدادات تلقائياً عندما تصبح الغرفة في وضع الإعدادات
+  useEffect(() => {
+    if (room.status === 'settings' && isHost) {
+      setShowSettings(true);
+    }
+  }, [room.status, isHost]);
+  
   useEffect(() => {
     const showBriefly = (text: string) => {
+      
       setFeedback(text);
       window.setTimeout(() => setFeedback(''), 3000);
     };
@@ -93,8 +101,13 @@ export default function Room({ room, myId, onLeave }: RoomProps) {
       'round:next',
       { code: room.code },
       (result: { ok: boolean; error?: string }) => {
-        if (!result.ok) {
-          setFeedback(result.error ?? 'تعذر بدء الجولة التالية');
+        if (!result?.ok) {
+          setFeedback(result?.error ?? 'تعذر تجهيز الجولة التالية');
+          return;
+        }
+  
+        if (isHost) {
+          setShowSettings(true);
         }
       }
     );

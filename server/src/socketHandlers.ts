@@ -420,15 +420,41 @@ socket.on(
   });
 
   // -------------------- الجولة التالية --------------------
-  socket.on('round:next', (payload: { code: string }, callback?: (res: any) => void) => {
-    const room = getRoom(payload.code);
-    if (!room || room.status !== 'roundEnd') return callback?.({ ok: false });
-
-    startNewRound(room, room.round?.winnerPlayerId ?? undefined);
-    callback?.({ ok: true });
-    broadcastRoomState(io, room);
-    scheduleTurnTimeout(io, room);
-  });
+  socket.on(
+    'round:next',
+    (payload: { code: string }, callback?: (res: any) => void) => {
+      const room = getRoom(payload.code);
+  
+      if (!room) {
+        return callback?.({
+          ok: false,
+          error: 'الغرفة غير موجودة',
+        });
+      }
+  
+      if (room.status !== 'roundEnd') {
+        return callback?.({
+          ok: false,
+          error: 'الجولة لم تنته بعد',
+        });
+      }
+  
+      // إلغاء جاهزية اللاعبين حتى يوافق الاثنان على الجولة الجديدة
+      room.players.forEach((player) => {
+        player.isReady = false;
+      });
+  
+      // إزالة بيانات الجولة السابقة
+      room.round = null;
+  
+      // العودة لشاشة الإعدادات بدل بدء الجولة مباشرة
+      room.status = 'settings';
+  
+      callback?.({ ok: true });
+  
+      broadcastRoomState(io, room);
+    }
+  );
 
   // -------------------- جولة جديدة في نفس الغرفة (لا تصفير للنقاط أو البطاقات) --------------------
   socket.on('match:rematch', (payload: { code: string }, callback?: (res: any) => void) => {
