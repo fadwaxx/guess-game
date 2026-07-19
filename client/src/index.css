@@ -1169,3 +1169,25 @@ body,
     min-height: 360px !important;
   }
 }
+.settings-ok-button{
+  width:100%;
+  margin-top:22px;
+  padding:14px;
+  border:none;
+  border-radius:14px;
+  background:#67a948;
+  color:#fff;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.settings-ok-button:hover{
+  background:#5d9d42;
+  transform:translateY(-2px);
+}
+
+.settings-ok-button:active{
+  transform:translateY(1px);
+}

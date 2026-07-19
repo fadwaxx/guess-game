@@ -137,11 +137,15 @@ export default function Room({ room, myId, onLeave }: RoomProps) {
           {room.players.length < 2 && <p className="waiting-line">بانتظار اللاعب الثاني...</p>}
         </div>
         <div className="ready-note">👥 {room.players.length === 2 ? 'اللاعبان موجودان' : 'شارك الكود مع صديقك'}</div>
-        {lobby && (
-          <button className={`start-paper-button ${me?.isReady ? 'ready' : ''}`} disabled={room.players.length < 2} onClick={toggleReady}>
-            {me?.isReady ? '✓ أنت جاهز' : 'ابدأ اللعبة'}
-          </button>
-        )}
+        {lobby && !showSettings && (
+  <button
+    className={`start-paper-button ${me?.isReady ? 'ready' : ''}`}
+    disabled={room.players.length < 2}
+    onClick={toggleReady}
+  >
+    {me?.isReady ? '✓ أنت جاهز' : 'ابدأ اللعبة'}
+  </button>
+)}
       </aside>
 
       <aside className="secret-card paper-panel">
@@ -188,17 +192,61 @@ export default function Room({ room, myId, onLeave }: RoomProps) {
       </main>
 
       {showSettings && lobby && (
-        <div className="settings-drawer paper-panel">
-          <h3>إعدادات الغرفة</h3>
-          {!isHost && <p>المضيف فقط يستطيع تعديل الإعدادات.</p>}
-          <div className="setting-row">
-            <b>الفئة</b>
-            <div>{categories.map((cat) => <button disabled={!isHost} className={cat.id === room.settings.categoryId ? 'selected' : ''} onClick={() => updateSettings({ categoryId: cat.id })} key={cat.id}>{cat.icon} {cat.nameAr}</button>)}</div>
-          </div>
-          <div className="setting-row"><b>مدة الدور</b><div>{TURN_DURATION_OPTIONS.map((opt) => <button disabled={!isHost} className={opt.value === room.settings.turnDurationMs ? 'selected' : ''} onClick={() => updateSettings({ turnDurationMs: opt.value })} key={opt.value}>{opt.label}</button>)}</div></div>
-          
-        </div>
-      )}
+  <div className="settings-drawer paper-panel">
+    <h3>إعدادات الغرفة</h3>
+
+    {!isHost && (
+      <p>المضيف فقط يستطيع تعديل الإعدادات.</p>
+    )}
+
+    <div className="setting-row">
+      <b>الفئة</b>
+
+      <div>
+        {categories.map((cat) => (
+          <button
+            key={cat.id}
+            disabled={!isHost}
+            className={cat.id === room.settings.categoryId ? "selected" : ""}
+            onClick={() => updateSettings({ categoryId: cat.id })}
+          >
+            {cat.icon} {cat.nameAr}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div className="setting-row">
+      <b>مدة الدور</b>
+
+      <div>
+        {TURN_DURATION_OPTIONS.map((opt) => (
+          <button
+            key={opt.value}
+            disabled={!isHost}
+            className={
+              opt.value === room.settings.turnDurationMs ? "selected" : ""
+            }
+            onClick={() =>
+              updateSettings({ turnDurationMs: opt.value })
+            }
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    {isHost && (
+      <button
+        className="settings-ok-button"
+        onClick={() => setShowSettings(false)}
+      >
+        ✅ موافق
+      </button>
+    )}
+  </div>
+)}
 
       {!lobby && round && !round.revealed && (
         <div className="turn-paper paper-panel">
