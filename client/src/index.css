@@ -402,8 +402,20 @@ body {
 .result-modal button { margin-top: 15px; padding: 12px 25px; border-radius: 12px; background: #5c9b3f; color: white; font-weight: 900; }
 .toast-message { position: fixed; z-index: 60; top: 20px; left: 50%; transform: translateX(-50%); padding: 12px 25px; border: 3px solid #2b261e; border-radius: 13px; background: #fff2ca; box-shadow: 4px 4px 0 rgba(0,0,0,.25); font-weight: 900; }
 
-@media (max-width: 1100px) {
-  .scrap-room { min-height: 1500px; padding: 12px; }
+@media (min-width:768px) and (max-width:1199px){
+  .scrap-room{
+    display:grid;
+    grid-template-columns:260px 1fr 260px;
+    grid-template-rows:auto auto 1fr auto;
+    gap:18px;
+
+    min-height:100vh;
+    padding:20px;
+}
+.scrap-room>*{
+  position:static !important;
+  transform:none !important;
+}
   .room-code { top: 90px; width: 330px; }
   .leave-button { top: 15px; left: 15px; } .settings-button { top: 15px; right: 15px; }
   .black-stage { top: 250px; width: 88vw; height: 480px; }
