@@ -1,0 +1,30 @@
+import { GameItem } from '../types';
+
+// فئة البلدان - 25 عنصرًا
+export const countriesItems: GameItem[] = [
+  { id: 'saudi-arabia', categoryId: 'countries', nameAr: 'السعودية', nameEn: 'Saudi Arabia', aliasesAr: ['المملكة العربية السعودية'], emoji: '🇸🇦', imageUrl: '', attributes: [] },
+  { id: 'uae', categoryId: 'countries', nameAr: 'الإمارات', nameEn: 'United Arab Emirates', aliasesAr: ['الامارات', 'الإمارات العربية المتحدة'], emoji: '🇦🇪', imageUrl: '', attributes: [] },
+  { id: 'kuwait', categoryId: 'countries', nameAr: 'الكويت', nameEn: 'Kuwait', aliasesAr: [], emoji: '🇰🇼', imageUrl: '', attributes: [] },
+  { id: 'qatar', categoryId: 'countries', nameAr: 'قطر', nameEn: 'Qatar', aliasesAr: [], emoji: '🇶🇦', imageUrl: '', attributes: [] },
+  { id: 'bahrain', categoryId: 'countries', nameAr: 'البحرين', nameEn: 'Bahrain', aliasesAr: [], emoji: '🇧🇭', imageUrl: '', attributes: [] },
+  { id: 'oman', categoryId: 'countries', nameAr: 'عُمان', nameEn: 'Oman', aliasesAr: ['عمان'], emoji: '🇴🇲', imageUrl: '', attributes: [] },
+  { id: 'egypt', categoryId: 'countries', nameAr: 'مصر', nameEn: 'Egypt', aliasesAr: [], emoji: '🇪🇬', imageUrl: '', attributes: [] },
+  { id: 'jordan', categoryId: 'countries', nameAr: 'الأردن', nameEn: 'Jordan', aliasesAr: ['الاردن'], emoji: '🇯🇴', imageUrl: '', attributes: [] },
+  { id: 'morocco', categoryId: 'countries', nameAr: 'المغرب', nameEn: 'Morocco', aliasesAr: [], emoji: '🇲🇦', imageUrl: '', attributes: [] },
+  { id: 'algeria', categoryId: 'countries', nameAr: 'الجزائر', nameEn: 'Algeria', aliasesAr: [], emoji: '🇩🇿', imageUrl: '', attributes: [] },
+  { id: 'tunisia', categoryId: 'countries', nameAr: 'تونس', nameEn: 'Tunisia', aliasesAr: [], emoji: '🇹🇳', imageUrl: '', attributes: [] },
+  { id: 'turkey', categoryId: 'countries', nameAr: 'تركيا', nameEn: 'Turkey', aliasesAr: [], emoji: '🇹🇷', imageUrl: '', attributes: [] },
+  { id: 'japan', categoryId: 'countries', nameAr: 'اليابان', nameEn: 'Japan', aliasesAr: [], emoji: '🇯🇵', imageUrl: '', attributes: [] },
+  { id: 'china', categoryId: 'countries', nameAr: 'الصين', nameEn: 'China', aliasesAr: [], emoji: '🇨🇳', imageUrl: '', attributes: [] },
+  { id: 'south-korea', categoryId: 'countries', nameAr: 'كوريا الجنوبية', nameEn: 'South Korea', aliasesAr: ['كوريا'], emoji: '🇰🇷', imageUrl: '', attributes: [] },
+  { id: 'india', categoryId: 'countries', nameAr: 'الهند', nameEn: 'India', aliasesAr: [], emoji: '🇮🇳', imageUrl: '', attributes: [] },
+  { id: 'france', categoryId: 'countries', nameAr: 'فرنسا', nameEn: 'France', aliasesAr: [], emoji: '🇫🇷', imageUrl: '', attributes: [] },
+  { id: 'italy', categoryId: 'countries', nameAr: 'إيطاليا', nameEn: 'Italy', aliasesAr: ['ايطاليا'], emoji: '🇮🇹', imageUrl: '', attributes: [] },
+  { id: 'germany', categoryId: 'countries', nameAr: 'ألمانيا', nameEn: 'Germany', aliasesAr: ['المانيا'], emoji: '🇩🇪', imageUrl: '', attributes: [] },
+  { id: 'spain', categoryId: 'countries', nameAr: 'إسبانيا', nameEn: 'Spain', aliasesAr: ['اسبانيا'], emoji: '🇪🇸', imageUrl: '', attributes: [] },
+  { id: 'uk', categoryId: 'countries', nameAr: 'بريطانيا', nameEn: 'United Kingdom', aliasesAr: ['المملكة المتحدة', 'إنجلترا', 'انجلترا'], emoji: '🇬🇧', imageUrl: '', attributes: [] },
+  { id: 'usa', categoryId: 'countries', nameAr: 'الولايات المتحدة', nameEn: 'United States', aliasesAr: ['أمريكا', 'امريكا'], emoji: '🇺🇸', imageUrl: '', attributes: [] },
+  { id: 'canada', categoryId: 'countries', nameAr: 'كندا', nameEn: 'Canada', aliasesAr: [], emoji: '🇨🇦', imageUrl: '', attributes: [] },
+  { id: 'brazil', categoryId: 'countries', nameAr: 'البرازيل', nameEn: 'Brazil', aliasesAr: [], emoji: '🇧🇷', imageUrl: '', attributes: [] },
+  { id: 'australia', categoryId: 'countries', nameAr: 'أستراليا', nameEn: 'Australia', aliasesAr: ['استراليا'], emoji: '🇦🇺', imageUrl: '', attributes: [] },
+];
