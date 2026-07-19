@@ -411,8 +411,7 @@ body {
 
     min-height:100vh;
     padding:20px;
-}
-.scrap-room>*{
+}.scrap-room>*{
   position:static !important;
   transform:none !important;
 }
