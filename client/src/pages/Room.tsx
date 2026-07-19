@@ -113,25 +113,28 @@ export default function Room({ room, myId, onLeave }: RoomProps) {
     <section className="scrap-room" aria-label="غرفة اللعبة">
       <button className="paper-button leave-button" onClick={leaveRoom}>🚪 خروج من الغرفة</button>
       <button className="paper-button settings-button" onClick={() => setShowSettings((value) => !value)}>⚙ الإعدادات</button>
+     
       <footer className="creator-credit">
-  <span>صُنعت بواسطة </span>
+  <span className="creator-star">✦</span>
+
+  <span className="creator-text">Crafted by</span>
 
   <a
     href="https://www.tiktok.com/@fadwa.s10"
     target="_blank"
     rel="noopener noreferrer"
-    aria-label="حساب فدوى على تيك توك"
   >
-    <span className="tiktok-icon">Tiktok  </span>
-    <strong>@fadwa.s10</strong>
+    @fadwa.s10
   </a>
 
+  <span className="creator-dot">•</span>
+
   <a
-    href="https://fadwa-portfolio-five.vercel.app/?utm_source=chatgpt.com#contact"
+    href="https://رابط_البورتفوليو"
     target="_blank"
     rel="noopener noreferrer"
   >
-    البورتفوليو
+    Portfolio
   </a>
 </footer>
 

@@ -1202,22 +1202,43 @@ body,
   margin-top:10px;
   margin-bottom:18px;
 
-  text-align:center;
   font-size:13px;
-  opacity:.75;
-}
+  color:#5a4c3e;
+  opacity:.82;
 
+  user-select:none;
+}
+.creator-star{
+  font-size:15px;
+  color:#d79b2f;
+}
+.creator-text{
+  letter-spacing:.3px;
+  font-weight:500;
+}
 .creator-credit a{
-  color:inherit;
+  color:#2f2f2f;
   text-decoration:none;
   font-weight:700;
+  transition:all .2s ease;
 }
-
+.creator-dot{
+  opacity:.55;
+}
 .creator-credit a:hover{
-  opacity:1;
-  text-decoration:underline;
+  color:#000;
+  transform:translateY(-1px);
 }
 
+@media (max-width:768px){
+
+  .creator-credit{
+      font-size:12px;
+      margin-top:8px;
+      margin-bottom:14px;
+  }
+
+}
 .creator-credit .tiktok-icon {
   display: inline-flex;
   align-items: center;
