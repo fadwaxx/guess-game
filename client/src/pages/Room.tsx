@@ -281,6 +281,27 @@ export default function Room({ room, myId, onLeave }: RoomProps) {
       )}
 
       {feedback && <div className="toast-message">{feedback}</div>}
+      <footer className="creator-credit">
+  <span>صُنعت بواسطة</span>
+
+  <a
+    href="https://www.tiktok.com/@fadwa.s10"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="حساب فدوى على تيك توك"
+  >
+    <span className="tiktok-icon">♪</span>
+    <strong>@fadwa.s10</strong>
+  </a>
+
+  <a
+    href="https://fadwa-portfolio-five.vercel.app/?utm_source=chatgpt.com#contact"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    البورتفوليو
+  </a>
+</footer>
     </section>
   );
 }
