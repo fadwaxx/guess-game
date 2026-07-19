@@ -1047,3 +1047,125 @@ body,
   content: none !important;
   display: none !important;
 }
+
+/* ==================== التصحيح النهائي للآيباد ==================== */
+@media (min-width: 651px) and (max-width: 1199px) {
+  /* يمنع RTL من عكس أعمدة الـ Grid */
+  .scrap-room {
+    direction: ltr !important;
+    grid-template-columns: minmax(170px, .72fr) minmax(380px, 1.7fr) minmax(220px, .9fr) !important;
+    grid-template-areas:
+      'leave code settings'
+      'secret stage players'
+      'turn judge players'
+      'info info info' !important;
+    grid-template-rows: auto minmax(440px, auto) auto auto !important;
+    gap: 18px !important;
+    padding: calc(18px + env(safe-area-inset-top)) 18px calc(22px + env(safe-area-inset-bottom)) !important;
+    overflow-x: hidden !important;
+  }
+
+  .scrap-room > * {
+    direction: rtl;
+    position: relative !important;
+    inset: auto !important;
+    transform: none !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  .leave-button {
+    grid-area: leave !important;
+    justify-self: start !important;
+  }
+
+  .room-code {
+    grid-area: code !important;
+    justify-self: center !important;
+    width: min(100%, 430px) !important;
+  }
+
+  .settings-button {
+    grid-area: settings !important;
+    justify-self: end !important;
+  }
+
+  .secret-card {
+    grid-area: secret !important;
+    width: 100% !important;
+    margin-top: 26px !important;
+  }
+
+  .black-stage {
+    grid-area: stage !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: clamp(440px, 52vw, 560px) !important;
+    margin: 0 !important;
+    border: none !important;
+    outline: none !important;
+    border-radius: 18px !important;
+    box-shadow: none !important;
+    background: #171714 !important;
+    background-image: none !important;
+  }
+
+  .scrap-room .black-stage::before,
+  .scrap-room .black-stage::after {
+    content: none !important;
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: none !important;
+  }
+
+  .players-paper {
+    grid-area: players !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 440px !important;
+    margin-top: 26px !important;
+  }
+
+  .turn-paper {
+    grid-area: turn !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .judge-paper {
+    grid-area: judge !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .game-info {
+    grid-area: info !important;
+    width: min(100%, 900px) !important;
+    justify-self: center !important;
+    margin: 0 !important;
+  }
+}
+
+/* الآيباد بالطول */
+@media (min-width: 651px) and (max-width: 900px) {
+  .scrap-room {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    grid-template-areas:
+      'leave settings'
+      'code code'
+      'stage stage'
+      'secret players'
+      'turn judge'
+      'info info' !important;
+    grid-template-rows: auto auto auto auto auto auto !important;
+  }
+
+  .black-stage {
+    height: clamp(420px, 64vw, 540px) !important;
+  }
+
+  .players-paper {
+    min-height: 360px !important;
+  }
+}
