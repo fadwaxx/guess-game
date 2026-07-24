@@ -1,0 +1,4 @@
+import { GameItem } from '../types';
+export const brandsItems:GameItem[]=[
+['apple','آبل','Apple','🍎'],['samsung','سامسونج','Samsung','📱'],['nike','نايكي','Nike','👟'],['adidas','أديداس','Adidas','👕'],['zara','زارا','Zara','👗'],['gucci','غوتشي','Gucci','👜'],['dior','ديور','Dior','💄'],['chanel','شانيل','Chanel','🖤'],['toyota','تويوتا','Toyota','🚙'],['bmw','بي إم دبليو','BMW','🚗'],['mercedes','مرسيدس','Mercedes','🚘'],['tesla','تسلا','Tesla','⚡'],['ikea','ايكيا','IKEA','🪑'],['mcdonalds','ماكدونالدز','McDonalds','🍔'],['starbucks','ستاربكس','Starbucks','☕'],['pepsi','بيبسي','Pepsi','🥤'],['coca-cola','كوكاكولا','Coca-Cola','🥤'],['lego','ليغو','LEGO','🧱'],['sony','سوني','Sony','🎧'],['amazon','أمازون','Amazon','📦'],['huawei','هواوي','Huawei','📱'],['puma','بوما','Puma','🐆'],['rolex','رولكس','Rolex','⌚'],['sephora','سيفورا','Sephora','💋']
+].map(([id,nameAr,nameEn,emoji])=>({id:`brand-${id}`,categoryId:'brands',nameAr,nameEn,aliasesAr:[],emoji,imageUrl:'',attributes:[]}));

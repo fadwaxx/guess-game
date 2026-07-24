@@ -66,4 +66,15 @@ export const animalsItems: GameItem[] = [
   { id: 'turkey', categoryId: 'animals', nameAr: 'ديك رومي', nameEn: 'Turkey', aliasesAr: ['حبش'], emoji: '🦃', imageUrl: '', attributes: ['طائر', 'أليف'] },
   { id: 'frog', categoryId: 'animals', nameAr: 'ضفدع', nameEn: 'Frog', aliasesAr: ['الضفدع'], emoji: '🐸', imageUrl: '', attributes: ['بري', 'بحري'] },
   { id: 'lizard', categoryId: 'animals', nameAr: 'سحلية', nameEn: 'Lizard', aliasesAr: ['السحلية'], emoji: '🦎', imageUrl: '', attributes: ['بري'] },
+
+  { id:'ant',categoryId:'animals',nameAr:'نملة',nameEn:'Ant',aliasesAr:['النملة'],emoji:'🐜',imageUrl:'',attributes:['حشرة'] },
+  { id:'bee',categoryId:'animals',nameAr:'نحلة',nameEn:'Bee',aliasesAr:['النحلة'],emoji:'🐝',imageUrl:'',attributes:['حشرة'] },
+  { id:'butterfly',categoryId:'animals',nameAr:'فراشة',nameEn:'Butterfly',aliasesAr:['الفراشة'],emoji:'🦋',imageUrl:'',attributes:['حشرة'] },
+  { id:'spider',categoryId:'animals',nameAr:'عنكبوت',nameEn:'Spider',aliasesAr:['العنكبوت'],emoji:'🕷️',imageUrl:'',attributes:['حشرة'] },
+  { id:'beetle',categoryId:'animals',nameAr:'خنفساء',nameEn:'Beetle',aliasesAr:['الخنفساء'],emoji:'🪲',imageUrl:'',attributes:['حشرة'] },
+  { id:'mosquito',categoryId:'animals',nameAr:'بعوضة',nameEn:'Mosquito',aliasesAr:['البعوض'],emoji:'🦟',imageUrl:'',attributes:['حشرة'] },
+  { id:'lizard',categoryId:'animals',nameAr:'سحلية',nameEn:'Lizard',aliasesAr:['السحلية'],emoji:'🦎',imageUrl:'',attributes:['زاحف'] },
+  { id:'chameleon',categoryId:'animals',nameAr:'حرباء',nameEn:'Chameleon',aliasesAr:['الحرباء'],emoji:'🦎',imageUrl:'',attributes:['زاحف'] },
+  { id:'iguana',categoryId:'animals',nameAr:'إغوانا',nameEn:'Iguana',aliasesAr:['اغوانا'],emoji:'🦎',imageUrl:'',attributes:['زاحف'] },
+  { id:'frog',categoryId:'animals',nameAr:'ضفدع',nameEn:'Frog',aliasesAr:['الضفدع'],emoji:'🐸',imageUrl:'',attributes:['برمائي'] },
 ];

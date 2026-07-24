@@ -1,0 +1,4 @@
+import { GameItem } from '../types';
+export const entertainmentItems:GameItem[]=[
+['movie','فيلم','Movie','🎬'],['series','مسلسل','Series','📺'],['cartoon','كرتون','Cartoon','🧸'],['anime','أنمي','Anime','🌸'],['video-game','لعبة فيديو','Video game','🎮'],['cinema','سينما','Cinema','🍿'],['theater','مسرح','Theater','🎭'],['music','موسيقى','Music','🎵'],['podcast','بودكاست','Podcast','🎙️'],['youtube','يوتيوب','YouTube','▶️'],['netflix','نتفلكس','Netflix','📺'],['playstation','بلايستيشن','PlayStation','🎮'],['board-game','لعبة لوحية','Board game','🎲'],['puzzle','أحجية','Puzzle','🧩'],['magic-show','عرض سحري','Magic show','🎩'],['circus','سيرك','Circus','🎪'],['concert','حفلة موسيقية','Concert','🎤'],['comic','قصص مصورة','Comic','💥'],['karaoke','كاريوكي','Karaoke','🎙️'],['theme-park','مدينة ألعاب','Theme park','🎢']
+].map(([id,nameAr,nameEn,emoji])=>({id:`ent-${id}`,categoryId:'entertainment',nameAr,nameEn,aliasesAr:[],emoji,imageUrl:'',attributes:[]}));

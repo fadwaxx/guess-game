@@ -7,7 +7,7 @@ import IntroVideo from './components/IntroVideo';
 
 export default function App() {
   const [room, setRoom] = useState<PublicRoomState | null>(null);
-  const [myId, setMyId] = useState<string>(socket.id ?? '');
+  const [myId] = useState<string>(() => { const saved=localStorage.getItem('guess-player-token'); if(saved) return saved; const token=crypto.randomUUID(); localStorage.setItem('guess-player-token',token); return token; });
   const [error, setError] = useState<string>('');
   const [darkMode, setDarkMode] = useState(false);
   const [showIntro, setShowIntro] = useState(
@@ -16,7 +16,13 @@ export default function App() {
 
   useEffect(() => {
     function onConnect() {
-      setMyId(socket.id ?? '');
+      const code = new URLSearchParams(window.location.search).get('room');
+      const playerName = localStorage.getItem('playerName');
+      if (code && playerName) {
+        socket.emit('room:join', { code, playerName, playerToken: myId }, (res: any) => {
+          if (res?.ok) setRoom(res.room);
+        });
+      }
     }
     function onRoomState(state: PublicRoomState) {
       setRoom(state);
@@ -35,7 +41,7 @@ export default function App() {
       socket.off('room:state', onRoomState);
       socket.off('room:closed', onRoomClosed);
     };
-  }, []);
+  }, [myId]);
 
   const goHome = useCallback(() => {
     setRoom(null);

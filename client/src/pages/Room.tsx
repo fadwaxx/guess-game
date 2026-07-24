@@ -21,14 +21,14 @@ export default function Room({ room, myId, onLeave }: RoomProps) {
   const [copied, setCopied] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
-  const actualMyId = myId || socket.id || '';
+  const actualMyId = myId;
   const me = room.players.find((player) => player.id === actualMyId);
-  const opponent = room.players.find((player) => player.id !== actualMyId);
+  const opponent = room.players.find((player) => player.id === room.round?.targetPlayerId);
   const isHost = me?.isHost ?? false;
   const round = room.round;
   const isMyTurn = round?.currentTurnPlayerId === actualMyId;
   const currentTurnPlayer = room.players.find((player) => player.id === round?.currentTurnPlayerId);
-  const canJudge = room.status === 'playing' && Boolean(round) && !isMyTurn && Boolean(opponent);
+  const canJudge = room.status === 'playing' && Boolean(round) && round?.targetPlayerId === actualMyId;
   const category = useMemo(
     () => categories.find((item) => item.id === room.settings.categoryId),
     [categories, room.settings.categoryId]
@@ -85,7 +85,7 @@ export default function Room({ room, myId, onLeave }: RoomProps) {
   }
 
   function useRedCard() {
-    socket.emit('card:changeOpponent', { code: room.code }, (result: { ok: boolean; error?: string }) => {
+    socket.emit('card:changeOpponent', { code: room.code, targetPlayerId: round?.targetPlayerId }, (result: { ok: boolean; error?: string }) => {
       if (!result.ok) setFeedback(result.error ?? 'تعذر استخدام البطاقة الحمراء');
     });
   }
@@ -177,13 +177,13 @@ export default function Room({ room, myId, onLeave }: RoomProps) {
               {player.isHost && <i>♛</i>}
             </div>
           ))}
-          {room.players.length < 2 && <p className="waiting-line">بانتظار اللاعب الثاني...</p>}
+          {room.players.length < room.settings.playerCount && <p className="waiting-line">بانتظار اكتمال {room.settings.playerCount} لاعبين...</p>}
         </div>
-        <div className="ready-note">👥 {room.players.length === 2 ? 'اللاعبان موجودان' : 'شارك الكود مع صديقك'}</div>
+        <div className="ready-note">👥 {room.players.length === room.settings.playerCount ? 'اكتمل عدد اللاعبين' : `متصل ${room.players.length} من ${room.settings.playerCount}`}</div>
         {lobby && !showSettings && (
   <button
     className={`start-paper-button ${me?.isReady ? 'ready' : ''}`}
-    disabled={room.players.length < 2}
+    disabled={room.players.length < room.settings.playerCount}
     onClick={toggleReady}
   >
     {me?.isReady ? '✓ أنت جاهز' : 'ابدأ اللعبة'}
@@ -219,8 +219,8 @@ export default function Room({ room, myId, onLeave }: RoomProps) {
         {lobby ? (
           <div className="stage-message">
             <div>👥</div>
-            <h2>{room.players.length < 2 ? 'بانتظار انضمام لاعب آخر...' : 'اللاعبان جاهزان للتحدي'}</h2>
-            <p>كل لاعب يرى عنصر منافسه ويحاول المنافس تخمينه</p>
+            <h2>{room.players.length < room.settings.playerCount ? 'بانتظار اكتمال اللاعبين...' : 'اللاعبون جاهزون للتحدي'}</h2>
+            <p>{room.settings.playerCount === 2 ? 'كل لاعب يرى عنصر منافسه ويحاول تخمينه' : 'في دورك اختر لاعبًا، ثم حاول تخمين عنصره'}</p>
           </div>
         ) : item ? (
           <div className="challenge-item">
@@ -293,6 +293,9 @@ export default function Room({ room, myId, onLeave }: RoomProps) {
 
       {!lobby && round && !round.revealed && (
         <div className="turn-paper paper-panel">
+          {isMyTurn && room.settings.playerCount > 2 && (
+            <div className="target-picker"><b>اختر اللاعب المستهدف:</b><div>{room.players.filter(p => p.id !== actualMyId).map(p => <button key={p.id} className={round.targetPlayerId === p.id ? 'selected' : ''} onClick={() => socket.emit('turn:selectTarget', { code: room.code, targetPlayerId: p.id })}>{p.name}</button>)}</div></div>
+          )}
           <strong>{isMyTurn ? 'دورك الآن' : `دور ${currentTurnPlayer?.name ?? 'المنافس'}`}</strong>
           <Timer endsAt={round.turnEndsAt} isMyTurn={isMyTurn} />
           {blueActiveForMe && <em className="blue-turn-note">🟦 بطاقتك فعالة — المتبقي {round.blueTurnsLeftIncludingCurrent} أدوار مع الدور الحالي</em>}
@@ -302,15 +305,15 @@ export default function Room({ room, myId, onLeave }: RoomProps) {
 
       {!lobby && !round?.revealed && (
         <div className="judge-paper paper-panel">
-          <button className="wrong-answer" disabled={!canJudge} onClick={() => judgeAnswer(false)}>↪ انتقال الدور</button>
-          <button className="correct-answer" disabled={!canJudge} onClick={() => judgeAnswer(true)}>✓ خمن العنصر</button>
+          <button className="wrong-answer pass-turn-button" disabled={!canJudge} onClick={() => judgeAnswer(false)}>↪ انتقال الدور</button>
+          <button className="correct-answer star-guess-button" disabled={!canJudge} onClick={() => judgeAnswer(true)}>★ خمن العنصر</button>
           <small>{canJudge ? `اضغط «خمن العنصر» فقط إذا ذكر ${currentTurnPlayer?.name ?? 'المنافس'} الاسم الصحيح، وإلا انقل الدور` : 'الأزرار تظهر لصاحب العنصر فقط'}</small>
         </div>
       )}
 
       <footer className="game-info paper-panel">
         <div><span>{category?.icon ?? '🎲'}</span><b>الفئة</b><strong>{category?.nameAr ?? room.settings.categoryId}</strong></div>
-        <div><span>♾️</span><b>المحاولات</b><strong>غير محدودة</strong></div>
+        <div><span>🔢</span><b>الجولات</b><strong>{room.settings.roundsMode === 'unlimited' ? 'غير محدودة' : `${room.totalRoundsPlayed} / ${room.settings.roundsMode}`}</strong></div>
         <div><span>⏱</span><b>مهلة السؤال</b><strong>{Math.round(room.settings.turnDurationMs / 1000)} ثانية</strong></div>
       </footer>
 
@@ -323,8 +326,8 @@ export default function Room({ room, myId, onLeave }: RoomProps) {
         </div>
       )}
 
+      {room.status === 'matchEnd' && <div className="result-modal paper-panel"><h2>انتهت المباراة 🏆</h2><p>الفائز: {room.matchWinnerIds.map(id => room.players.find(p => p.id === id)?.name).filter(Boolean).join(' و ')}</p><p>النتيجة النهائية بعد {room.totalRoundsPlayed} جولة.</p></div>}
       {feedback && <div className="toast-message">{feedback}</div>}
- 
     </section>
   );
 }

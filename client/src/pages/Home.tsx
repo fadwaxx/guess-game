@@ -1,136 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect,useState } from 'react';
 import { socket } from '../socket';
-import { PublicRoomState } from '../types';
-
-interface HomeProps {
-  onRoomReady: (room: PublicRoomState) => void;
-  onError: (message: string) => void;
-}
-
-export default function Home({ onRoomReady, onError }: HomeProps) {
-  const [mode, setMode] = useState<'idle' | 'join'>('idle');
-  const [playerName, setPlayerName] = useState(() => localStorage.getItem('playerName') || '');
-  const [roomCode, setRoomCode] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const codeFromUrl = params.get('room');
-    if (codeFromUrl) {
-      setRoomCode(codeFromUrl.toUpperCase());
-      setMode('join');
-    }
-  }, []);
-
-  function persistName(name: string) {
-    setPlayerName(name);
-    localStorage.setItem('playerName', name);
-  }
-
-  function handleCreate() {
-    if (!playerName.trim()) return onError('اكتب اسمك أولًا');
-    setLoading(true);
-    socket.emit('room:create', { playerName }, (res: any) => {
-      setLoading(false);
-      if (res.ok) {
-        onRoomReady(res.room);
-        const url = new URL(window.location.href);
-        url.searchParams.set('room', res.room.code);
-        window.history.replaceState({}, '', url.toString());
-      } else {
-        onError(res.error || 'تعذر إنشاء الغرفة');
-      }
-    });
-  }
-
-  function handleJoin() {
-    if (!playerName.trim()) return onError('اكتب اسمك أولًا');
-    if (!roomCode.trim()) return onError('اكتب رمز الغرفة');
-    setLoading(true);
-    socket.emit('room:join', { code: roomCode.trim().toUpperCase(), playerName }, (res: any) => {
-      setLoading(false);
-      if (res.ok) {
-        onRoomReady(res.room);
-        const url = new URL(window.location.href);
-        url.searchParams.set('room', res.room.code);
-        window.history.replaceState({}, '', url.toString());
-      } else {
-        onError(res.error || 'تعذر الانضمام للغرفة');
-      }
-    });
-  }
-
-  return (
-    <div className="home-entry mx-auto flex min-h-[72vh] max-w-md items-center justify-center py-8">
-      <section className="retro-entry-panel w-full px-5 py-7 sm:px-8">
-        <div className="mb-7 text-center">
-          <div className="mb-1 text-5xl drop-shadow-sm">🕵️‍♂️</div>
-          <h2 className="retro-title text-2xl font-extrabold">لعبة تخمين العنصر</h2>
-          <p className="retro-description mt-2 text-sm">
-            أنشئ غرفة جديدة أو انضم إلى صديقك باستخدام رمز الغرفة
-          </p>
-        </div>
-
-        <div className="retro-field-group">
-          <label className="retro-label">اسمك</label>
-          <input
-            value={playerName}
-            onChange={(e) => persistName(e.target.value)}
-            placeholder="اكتب اسمك هنا"
-            maxLength={20}
-            className="retro-input"
-          />
-        </div>
-
-        {mode === 'idle' && (
-          <div className="mt-6 flex flex-col gap-5">
-            <button
-              onClick={handleCreate}
-              disabled={loading}
-              className="retro-action-button retro-action-button--blue"
-            >
-              <span>{loading ? 'جارٍ الإنشاء...' : 'إنشاء غرفة جديدة'}</span>
-              <span className="retro-button-icon">⊕</span>
-            </button>
-
-            <button
-              onClick={() => setMode('join')}
-              className="retro-action-button retro-action-button--green"
-            >
-              <span>الانضمام إلى غرفة</span>
-              <span className="retro-button-icon">🔑</span>
-            </button>
-          </div>
-        )}
-
-        {mode === 'join' && (
-          <div className="mt-5 flex flex-col gap-4">
-            <div className="retro-field-group">
-              <label className="retro-label">رمز الغرفة</label>
-              <input
-                value={roomCode}
-                onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
-                placeholder="مثال: A52K9"
-                maxLength={6}
-                className="retro-input retro-code-input"
-              />
-            </div>
-
-            <button
-              onClick={handleJoin}
-              disabled={loading}
-              className="retro-action-button retro-action-button--green"
-            >
-              <span>{loading ? 'جارٍ الانضمام...' : 'الانضمام الآن'}</span>
-              <span className="retro-button-icon">🔑</span>
-            </button>
-
-            <button onClick={() => setMode('idle')} className="retro-back-button">
-              رجوع
-            </button>
-          </div>
-        )}
-      </section>
-    </div>
-  );
+import { PlayerCount,PublicRoomState,RoundsMode } from '../types';
+interface HomeProps{onRoomReady:(room:PublicRoomState)=>void;onError:(message:string)=>void;}
+const token=()=>{let t=localStorage.getItem('guess-player-token');if(!t){t=crypto.randomUUID();localStorage.setItem('guess-player-token',t);}return t;};
+export default function Home({onRoomReady,onError}:HomeProps){
+ const[mode,setMode]=useState<'idle'|'create'|'join'>('idle');const[playerName,setPlayerName]=useState(()=>localStorage.getItem('playerName')||'');const[roomCode,setRoomCode]=useState('');const[loading,setLoading]=useState(false);const[playerCount,setPlayerCount]=useState<PlayerCount>(2);const[roundsMode,setRoundsMode]=useState<RoundsMode>('unlimited');
+ useEffect(()=>{const c=new URLSearchParams(location.search).get('room');if(c){setRoomCode(c.toUpperCase());setMode('join');}},[]);
+ function persistName(v:string){setPlayerName(v);localStorage.setItem('playerName',v)}
+ function ready(res:any){setLoading(false);if(res.ok){onRoomReady(res.room);const u=new URL(location.href);u.searchParams.set('room',res.room.code);history.replaceState({},'',u.toString())}else onError(res.error||'تعذر تنفيذ الطلب')}
+ function create(){if(!playerName.trim())return onError('اكتب اسمك أولًا');setLoading(true);socket.emit('room:create',{playerName,playerToken:token(),playerCount,roundsMode},ready)}
+ function join(){if(!playerName.trim()||!roomCode.trim())return onError('اكتب اسمك ورمز الغرفة');setLoading(true);socket.emit('room:join',{code:roomCode.trim().toUpperCase(),playerName,playerToken:token()},ready)}
+ return <div className="home-entry mx-auto flex min-h-[72vh] max-w-md items-center justify-center py-8"><section className="retro-entry-panel w-full px-5 py-7 sm:px-8"><div className="mb-7 text-center"><div className="mb-1 text-5xl">🕵️‍♂️</div><h2 className="retro-title text-2xl font-extrabold">لعبة تخمين العنصر</h2><p className="retro-description mt-2 text-sm">اختر عدد اللاعبين قبل إنشاء الغرفة</p></div>
+ <div className="retro-field-group"><label className="retro-label">اسمك</label><input value={playerName} onChange={e=>persistName(e.target.value)} placeholder="اكتب اسمك هنا" maxLength={20} className="retro-input"/></div>
+ {mode==='idle'&&<div className="mt-6 flex flex-col gap-5"><button onClick={()=>setMode('create')} className="retro-action-button retro-action-button--blue"><span>إنشاء غرفة جديدة</span><span>⊕</span></button><button onClick={()=>setMode('join')} className="retro-action-button retro-action-button--green"><span>الانضمام إلى غرفة</span><span>🔑</span></button></div>}
+ {mode==='create'&&<div className="mt-5 flex flex-col gap-4"><div className="setting-row"><b>عدد اللاعبين</b><div>{([2,3,4] as PlayerCount[]).map(n=><button key={n} className={playerCount===n?'selected':''} onClick={()=>setPlayerCount(n)}>{n} لاعبين</button>)}</div></div><div className="setting-row"><b>عدد الجولات</b><div><button className={roundsMode==='unlimited'?'selected':''} onClick={()=>setRoundsMode('unlimited')}>غير محدود</button><button className={roundsMode===30?'selected':''} onClick={()=>setRoundsMode(30)}>30 جولة</button><button className={roundsMode===45?'selected':''} onClick={()=>setRoundsMode(45)}>45 جولة</button></div></div><button onClick={create} disabled={loading} className="retro-action-button retro-action-button--blue">{loading?'جارٍ الإنشاء...':'إنشاء الغرفة'}</button><button onClick={()=>setMode('idle')} className="retro-back-button">رجوع</button></div>}
+ {mode==='join'&&<div className="mt-5 flex flex-col gap-4"><div className="retro-field-group"><label className="retro-label">رمز الغرفة</label><input value={roomCode} onChange={e=>setRoomCode(e.target.value.toUpperCase())} placeholder="مثال: A52K9" maxLength={5} className="retro-input retro-code-input"/></div><button onClick={join} disabled={loading} className="retro-action-button retro-action-button--green">{loading?'جارٍ الانضمام...':'الانضمام الآن'}</button><button onClick={()=>setMode('idle')} className="retro-back-button">رجوع</button></div>}
+ </section></div>;
 }

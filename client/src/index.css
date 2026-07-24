@@ -1380,4 +1380,7 @@ body,
     max-height: calc(100dvh - 30px);
     padding: 22px 16px !important;
   }
-}
+}.pass-turn-button{background:#2563eb!important;color:#fff!important;border-color:#1d4ed8!important;box-shadow:4px 5px 0 #173b8f!important;transform:rotate(-1deg)}
+.star-guess-button{background:linear-gradient(135deg,#fff7bf,#f5c542)!important;color:#4a3200!important;border:3px solid #b77900!important;box-shadow:4px 5px 0 #8a5a00!important;position:relative}
+.star-guess-button::before,.star-guess-button::after{content:'✦';position:absolute;font-size:12px}.star-guess-button::before{top:4px;right:8px}.star-guess-button::after{bottom:3px;left:9px}
+.target-picker{margin:10px 0;padding:10px;border:2px dashed #555;background:#fff9dc}.target-picker>div{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.target-picker button{padding:7px 12px;border:2px solid #333;background:white}.target-picker button.selected{background:#fde047;font-weight:800}
